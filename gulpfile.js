@@ -27,7 +27,9 @@ var paths = {
         bowerDir + '/underscore/underscore.js',
         bowerDir + '/backbone/backbone.js',
         bowerDir + '/backbone.babysitter/lib/backbone.babysitter.js',
-        bowerDir + '/backbone.marionette/lib/backbone.marionette.js'
+        bowerDir + '/backbone.marionette/lib/backbone.marionette.js',
+        bowerDir + '/jade/jade.js',
+        bowerDir + '/jade/runtime.js'
     ],
     fonts: [
         styleDir + '/fonts/fontello/fontello.*'
@@ -52,7 +54,7 @@ var config = {
         src: [srcDir + '/**/*.jade'],
         watchSrc: [srcDir + '/**/*.jade'],
         options: {
-            client: true,
+            client: true
         }
     },
     index: {

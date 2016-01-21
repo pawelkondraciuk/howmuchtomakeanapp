@@ -15,6 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "backbone.marionette": "marionette#~2.4.4"
+    "backbone.marionette": "marionette#~2.4.4",
+    "jade": "~1.11.0"
   }
 }
