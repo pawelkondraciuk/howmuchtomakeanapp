@@ -1,0 +1,20 @@
+{
+  "name": "howmuchtomakeanapp",
+  "homepage": "https://github.com/pawelkondraciuk/howmuchtomakeanapp",
+  "authors": [],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone.marionette": "marionette#~2.4.4"
+  }
+}
