@@ -8,13 +8,13 @@ Setup
   ```
 2. Run
   ```
-   npm install
+  npm install
   ```
 3. Start app (optional)
   ```
-  npm start
+  npm run start
   ```
 4. Watch changes and compile
   ```
-  gulp watch
+  npm run watch
   ```

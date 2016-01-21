@@ -8,13 +8,13 @@ var rename = require('gulp-rename');
 var sass = require('gulp-ruby-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var jade = require('gulp-jade');
-var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var glob = require('globby');
 var through = require('through2');
+var connect = require('gulp-connect');
 
 var bowerDir = './vendor/components';
 var styleDir = './app/stylesheets';
@@ -72,7 +72,8 @@ gulp.task('build-sass', function() {
         .pipe(plumber())
         .pipe(rename('application.css'))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(destDir + '/css/'));
+        .pipe(gulp.dest(destDir + '/css/'))
+        .pipe(connect.reload());
 });
 
 gulp.task('watch-sass', function() {
@@ -102,14 +103,16 @@ gulp.task('vendor-js', function() {
         .pipe(gulp.dest(destDir + '/js/'));
 });
 
-gulp.task('build-js', function () {
+gulp.task('build-js', function (callback) {
     var bundledStream = through();
     bundledStream
         .pipe(source('app.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(destDir + '/js/'));
+        .pipe(gulp.dest(destDir + '/js/'))
+        .pipe(connect.reload());
+
     glob(config.coffee.src).then(function(entries) {
         var b = browserify({
             entries: entries,
@@ -140,7 +143,8 @@ gulp.task('build-templates', function(){
         .pipe(jade(config.templates.options))
         .pipe(jadeConcat('templates.js', {templateVariable:"JST"}))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(destDir + '/js/'));
+        .pipe(gulp.dest(destDir + '/js/'))
+        .pipe(connect.reload());
 });
 
 gulp.task('watch-templates', function() {
@@ -160,7 +164,8 @@ gulp.task('build-index', function(){
         .pipe(jade(config.index.options))
         .pipe(concat('index.html'))
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(destDir));
+        .pipe(gulp.dest(destDir))
+        .pipe(connect.reload());
 });
 
 gulp.task('watch-index', function() {
@@ -170,9 +175,21 @@ gulp.task('watch-index', function() {
 gulp.task('index', ['build-index', 'watch-index']);
 
 /*
+ *          Server
+ */
+
+gulp.task('start', function() {
+    connect.server({
+        root: 'dist',
+        livereload: true,
+        fallback: './dist/index.html'
+    });
+});
+
+/*
  *          Default
  */
 
-gulp.task('watch', ['watch-js', 'watch-templates', 'watch-sass', 'watch-index']);
+gulp.task('watch', ['watch-js', 'watch-templates', 'watch-sass', 'watch-index', 'start']);
 
 gulp.task('default', ['vendor-js', 'build-sass', 'build-js', 'build-templates', 'build-index', 'build-fonts']);
